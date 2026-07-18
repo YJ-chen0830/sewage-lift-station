@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ 污水抽升站設計 | Sewage Lift Station Design</title>
+<script src="https://yj-chen0830.github.io/jrh-core/jrh-core.js?v=3" defer></script>
+<style>
+  :root{--navy:#0b1f3a;--navy2:#13284a;--gold:#c9a14a;--gold2:#e0bf6e;--bg:#f5f3ee;--ink:#1c2530;--line:#d8d2c2;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Noto Sans TC","Segoe UI",sans-serif;background:var(--bg);color:var(--ink);}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#f5f3ee;padding:28px 32px;}
+  header h1{margin:0;font-size:22px;}
+  header span{color:var(--gold2);font-size:13px;display:block;margin-top:4px;}
+  main{max-width:1060px;margin:0 auto;padding:28px 20px 60px;}
+  .grid{display:grid;grid-template-columns:340px 1fr;gap:24px;}
+  @media(max-width:820px){.grid{grid-template-columns:1fr;}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 24px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+  .card h2{font-size:14.5px;margin:0 0 18px;color:var(--navy);font-weight:700;display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--gold);padding-bottom:10px;}
+  label{display:block;font-size:12px;color:#666;margin:10px 0 4px;font-weight:500;}
+  input,select{width:100%;padding:8px 11px;border:1.5px solid var(--line);border-radius:7px;font-size:13.5px;background:#fafaf8;}
+  input:focus,select:focus{outline:none;border-color:var(--gold);}
+  .sec{font-size:12px;font-weight:700;color:var(--navy);margin:16px 0 6px;border-left:4px solid var(--gold);padding-left:9px;letter-spacing:.04em;text-transform:uppercase;}
+  .hint{font-size:11.5px;color:#777;line-height:1.6;margin-top:4px;}
+  .note{font-size:11.5px;color:#999;margin-top:12px;line-height:1.75;background:#f9f7f2;border-radius:6px;padding:9px 12px;}
+  button.calc-btn{margin-top:16px;width:100%;padding:12px;border:none;border-radius:8px;background:var(--navy);color:#fff;font-size:14.5px;font-weight:700;cursor:pointer;}
+  button.calc-btn:hover{background:var(--navy2);}
+  button.pro-btn{margin-top:12px;width:100%;padding:12px;border:none;border-radius:8px;background:var(--gold);color:var(--navy);font-size:14.5px;font-weight:700;cursor:pointer;}
+  button.pro-btn:hover{filter:brightness(1.08);}
+  table{width:100%;border-collapse:collapse;margin-top:10px;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  th{background:var(--navy);color:#f5f3ee;font-weight:600;font-size:12px;padding:9px 10px;text-align:left;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  td{padding:9px 10px;font-size:13px;border-bottom:1px solid var(--line);}
+  tr:nth-child(even) td{background:#f9f7f3;}
+  td:last-child{text-align:right;font-weight:700;}
+  details.proc{margin-top:16px;border:1px solid var(--line);border-radius:8px;background:#fafaf8;overflow:hidden;}
+  details.proc summary{cursor:pointer;padding:10px 14px;font-weight:700;font-size:13px;color:var(--navy);user-select:none;list-style:none;display:flex;align-items:center;gap:6px;}
+  details.proc summary::before{content:"▶";font-size:10px;transition:transform .2s;}
+  details[open].proc summary::before{transform:rotate(90deg);}
+  details.proc pre{margin:0;padding:12px 16px 16px;font-family:"Courier New",monospace;font-size:11.5px;line-height:1.9;white-space:pre-wrap;color:#2c3e50;border-top:1px solid var(--line);}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .proj-section{background:#fff;border:1px solid var(--gold);border-radius:10px;padding:18px 22px;margin-bottom:20px;}
+  .proj-section h3{margin:0 0 12px;color:var(--navy);font-size:14px;font-weight:700;}
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:600px){.proj-grid,.row2{grid-template-columns:1fr;}}
+  .radio-group{display:grid;gap:8px;margin-top:8px;}
+  .radio-item{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fafaf8;}
+  .radio-item input{width:auto;margin-top:2px;}
+  .radio-item span{display:block;font-size:12.5px;color:var(--ink);font-weight:600;}
+  .radio-item small{display:block;color:#777;line-height:1.55;}
+  .subcard{margin-top:10px;padding:12px;border:1px dashed var(--line);border-radius:8px;background:#fcfbf8;}
+  .mob-tabs{display:none;}
+  @media screen and (max-width:767px){
+    .mob-tabs{display:flex;background:var(--bg);border-bottom:2px solid var(--line);margin:0 -20px 0;padding:0 20px;}
+    .mob-tab{flex:1;padding:11px 4px;text-align:center;font-size:13.5px;font-weight:700;color:#888;cursor:pointer;background:transparent;border:none;border-bottom:3px solid transparent;}
+    .mob-tab.active{color:var(--navy);border-bottom-color:var(--gold);}
+    .grid{display:block;}
+    .grid>.card{display:none;}
+    .grid>.card.mob-active{display:block;}
+  }
+  @media print{
+    header,.no-print{display:none!important;}
+    body{background:#fff;margin:0;font-size:9pt;line-height:1.5;color:#111;}
+    main{padding:0;max-width:100%!important;}
+    .grid{grid-template-columns:1fr!important;gap:10pt!important;}
+    .card{box-shadow:none!important;border:1px solid #ccc!important;border-radius:4pt!important;padding:10pt 12pt!important;break-inside:avoid;}
+    .card h2{font-size:10.5pt!important;padding-bottom:6pt!important;margin-bottom:9pt!important;}
+    label{font-size:8pt!important;margin:6pt 0 2pt!important;}
+    .sec{font-size:8pt!important;margin:10pt 0 4pt!important;}
+    .hint,.note{font-size:7.5pt!important;padding:6pt 9pt!important;}
+    table{border:1px solid #bbb!important;border-radius:0!important;margin-top:6pt!important;}
+    th{font-size:8pt!important;padding:5pt 7pt!important;background:#0b1f3a!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    td{font-size:8.5pt!important;padding:5pt 7pt!important;}
+    tr:nth-child(even) td{background:#f5f5f5!important;}
+    details.proc{display:block!important;margin-top:10pt!important;border:1pt solid #0b1f3a!important;border-radius:4pt!important;break-inside:avoid;background:#f9f9f6!important;}
+    details.proc>summary{display:none!important;}
+    details.proc::before{content:"📋  計算過程（供第三方檢核）";display:block;font-weight:700;font-size:8pt;color:#0b1f3a;padding:6pt 10pt 4pt;border-bottom:1px solid #ccc;letter-spacing:.04em;}
+    details.proc>pre{font-size:7pt!important;line-height:1.65!important;white-space:pre-wrap!important;padding:6pt 10pt 10pt!important;color:#1a1a1a!important;font-family:"Courier New",monospace!important;}
+    .proj-section{border:1.5pt solid #0b1f3a!important;border-radius:4pt!important;}
+    .subcard,.radio-item{border-color:#ccc!important;background:#fff!important;}
+    button.pro-btn,button.calc-btn{display:none!important;}
+    @page{margin:15mm 12mm;size:A4;}
+  }
+</style>
+</head>
+<body data-tool="sls">
+<header>
+  <a href="https://yj-chen0830.github.io/engineering-hub/" style="color:var(--gold2);font-size:12.5px;text-decoration:none;display:inline-block;margin-bottom:8px;">← 返回工程計算中心</a>
+  <h1>⚡ 污水抽升站設計（集水井＋揚程）</h1>
+  <span>Cycle Time 集水井有效容積法 + TDH 總揚程 + Hazen-Williams 摩擦損失 + 幫浦軸動力</span>
+</header>
+<main>
+
+<div class="proj-section no-print" id="projSection">
+  <h3>📁 專案資訊（列印時帶入計算書封面）</h3>
+  <div class="proj-grid">
+    <div><label>工程名稱</label><input id="pj-name" placeholder="○○污水下水道工程"></div>
+    <div><label>工程地點</label><input id="pj-loc" placeholder="○○市○○區"></div>
+    <div><label>承造廠商</label><input id="pj-contractor" placeholder="○○營造股份有限公司"></div>
+    <div><label>文件編號</label><input id="pj-docno" placeholder="SLS-CAL-001"></div>
+    <div><label>計算者</label><input id="pj-calc" placeholder="姓名"></div>
+    <div><label>審核者</label><input id="pj-review" placeholder="姓名"></div>
+    <div><label>計算日期</label><input id="pj-date" type="date"></div>
+  </div>
+</div>
+
+<div class="mob-tabs">
+  <button class="mob-tab active" onclick="switchMobTab('sls-in',this)">📋 輸入參數</button>
+  <button class="mob-tab" id="mobTab-sls-r" onclick="switchMobTab('sls-r',this)">📊 計算結果</button>
+</div>
+
+<div class="grid">
+  <div class="card mob-active" data-tab="sls-in">
+    <h2>抽升站設計輸入</h2>
+
+    <div class="sec">幫浦與運轉條件</div>
+    <div class="row2">
+      <div><label>單台幫浦抽水量 Qpump (L/s)</label><input id="sls-qpump" type="number" value="30" step="0.1" min="0.1"></div>
+      <div><label>最小允許啟閉循環時間 t_min (分鐘)</label><input id="sls-tmin" type="number" value="10" step="0.1" min="0.1"></div>
+    </div>
+    <div class="row2">
+      <div><label>靜揚程 Hs (m)</label><input id="sls-hs" type="number" value="8" step="0.1"></div>
+      <div><label>幫浦效率 η (%)</label><input id="sls-eta" type="number" value="70" step="0.1" min="1" max="100"></div>
+    </div>
+
+    <div class="sec">摩擦損失 hf</div>
+    <div class="radio-group">
+      <label class="radio-item">
+        <input type="radio" name="hf-mode" value="manual" onchange="toggleHfMode()">
+        <div>
+          <span>直接輸入摩擦損失</span>
+          <small>適合已有水力計算結果或廠商泵浦曲線估算值。</small>
+        </div>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="hf-mode" value="hw" onchange="toggleHfMode()" checked>
+        <div>
+          <span>Hazen-Williams 計算</span>
+          <small>依管徑、管長、流量與糙度係數自動推算 hf。</small>
+        </div>
+      </label>
+    </div>
+
+    <div class="subcard" id="sls-manual-box" style="display:none">
+      <label>摩擦損失 hf (m)</label>
+      <input id="sls-hf-manual" type="number" value="1.27" step="0.01" min="0">
+    </div>
+
+    <div class="subcard" id="sls-hw-box">
+      <div class="row2">
+        <div><label>管徑 D (mm)</label><input id="sls-d" type="number" value="200" step="1" min="1"></div>
+        <div><label>管長 L (m)</label><input id="sls-l" type="number" value="50" step="0.1" min="0"></div>
+      </div>
+      <div class="row2">
+        <div><label>Hazen-Williams 糙度 C</label><input id="sls-c" type="number" value="120" step="1" min="1"></div>
+        <div>
+          <label>流量 Q (L/s)</label>
+          <input id="sls-q-hw" type="number" value="30" step="0.1" min="0.1">
+          <div class="hint">預設與 Qpump 相同，可視需要自行覆寫。</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcSLS()">計算集水井容積與揚程</button>
+    <div class="note">集水井有效容積採 Hydraulic Institute cycle time 最不利進流條件公式：V = Qpump × t_min × 60 / 4。總揚程 TDH = Hs + hf。軸動力依 P = ρgQH / (1000η) 計算，η 為整體效率。Hazen-Williams 僅計沿程損失，未含局部損失、逆止閥及配件損失，正式設計應另加檢討。</div>
+  </div>
+
+  <div class="card" data-tab="sls-r">
+    <h2>設計計算結果</h2>
+    <div id="sls-result"><p style="color:#888">尚未計算</p></div>
+    <details class="proc" id="sls-proc" style="display:none">
+      <summary>📋 計算過程（供第三方檢核）</summary>
+      <pre id="sls-proc-text"></pre>
+    </details>
+    <button class="pro-btn no-print" onclick="openPro()">📄 產出計算書 PDF</button>
+  </div>
+</div>
+
+</main>
+<script>
+function switchMobTab(name,btn){
+  btn.parentElement.querySelectorAll('.mob-tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  btn.parentElement.nextElementSibling.querySelectorAll('.card').forEach(function(c){
+    c.classList.toggle('mob-active',c.dataset.tab===name);
+  });
+}
+function openPro(){JRH.checkEmail(function(){jrhPrint('污水抽升站設計計算書');});}
+function v(id){return parseFloat(document.getElementById(id).value)||0;}
+function f2(x){return x.toFixed(2);}
+function f3(x){return x.toFixed(3);}
+function f4(x){return x.toFixed(4);}
+function getHfMode(){
+  var el=document.querySelector('input[name="hf-mode"]:checked');
+  return el?el.value:'manual';
+}
+function toggleHfMode(){
+  var mode=getHfMode();
+  document.getElementById('sls-manual-box').style.display=mode==='manual'?'':'none';
+  document.getElementById('sls-hw-box').style.display=mode==='hw'?'':'none';
+}
+function syncQhw(){
+  var qpump=document.getElementById('sls-qpump');
+  var qhw=document.getElementById('sls-q-hw');
+  if(document.activeElement!==qhw){qhw.value=qpump.value;}
+}
+document.getElementById('sls-qpump').addEventListener('input',syncQhw);
+
+function calcSLS(){
+  var qpumpLs=v('sls-qpump');
+  var tmin=v('sls-tmin');
+  var hs=v('sls-hs');
+  var etaPct=v('sls-eta');
+  var eta=etaPct/100;
+  var hfMode=getHfMode();
+  var hf=0;
+  var qUsedLs=qpumpLs;
+  var hwText='';
+
+  if(qpumpLs<=0||tmin<=0||eta<=0){
+    document.getElementById('sls-result').innerHTML='<p style="color:#c0392b">請確認 Qpump、t_min、η 皆大於 0。</p>';
+    document.getElementById('sls-proc').style.display='none';
+    return;
+  }
+
+  if(hfMode==='manual'){
+    hf=v('sls-hf-manual');
+  }else{
+    var d=v('sls-d');
+    var l=v('sls-l');
+    var c=v('sls-c');
+    qUsedLs=v('sls-q-hw');
+    if(d<=0||l<0||c<=0||qUsedLs<=0){
+      document.getElementById('sls-result').innerHTML='<p style="color:#c0392b">Hazen-Williams 模式下請確認 D、L、C、Q 皆為有效正值。</p>';
+      document.getElementById('sls-proc').style.display='none';
+      return;
+    }
+    var qLmin=qUsedLs*60;
+    var numerator=Math.pow(qLmin,1.85);
+    var denominator=Math.pow(c,1.85)*Math.pow(d,4.87);
+    var unitLossKpa=6.05e5*(numerator/denominator);
+    var pfKpa=unitLossKpa*l;
+    hf=pfKpa/9.80665;
+    hwText=
+      '【摩擦損失】Hazen-Williams 沿程損失\n'+
+      '  已知：Q = '+qUsedLs+' L/s = '+f2(qLmin)+' L/min，D = '+d+' mm，L = '+l+' m，C = '+c+'\n'+
+      '  Pf(kPa) = 6.05×10^5 × (Q_Lmin^1.85 / (C^1.85 × d_mm^4.87)) × L\n'+
+      '          = 6.05×10^5 × (('+f2(qLmin)+')^1.85 / ('+c+'^1.85 × '+d+'^4.87)) × '+l+'\n'+
+      '          = 6.05×10^5 × ('+f3(numerator)+' / '+f3(denominator)+') × '+l+'\n'+
+      '          = '+f4(unitLossKpa)+' × '+l+' = '+f3(pfKpa)+' kPa\n'+
+      '  hf(m) = Pf / 9.80665 = '+f3(pfKpa)+' / 9.80665 = '+f3(hf)+' m\n\n';
+  }
+
+  var vActiveL=(qpumpLs*tmin*60)/4;
+  var vActiveM3=vActiveL/1000;
+  var tdh=hs+hf;
+  var qM3s=qpumpLs/1000;
+  var pKw=(1000*9.81*qM3s*tdh)/(1000*eta);
+
+  document.getElementById('sls-result').innerHTML=
+    '<table><tr><th>項目</th><th>數值</th></tr>'+
+    '<tr><td>摩擦損失 hf</td><td>'+f3(hf)+' m</td></tr>'+
+    '<tr><td>總揚程 TDH = Hs + hf</td><td>'+f3(tdh)+' m</td></tr>'+
+    '<tr><td>集水井有效容積 V_active</td><td>'+f3(vActiveM3)+' m³</td></tr>'+
+    '<tr><td>集水井有效容積 V_active</td><td>'+f2(vActiveL)+' L</td></tr>'+
+    '<tr><td>幫浦軸動力 P</td><td>'+f3(pKw)+' kW</td></tr>'+
+    '<tr><td>採用流量 Q</td><td>'+f3(qpumpLs)+' L/s</td></tr>'+
+    '<tr><td>幫浦效率 η</td><td>'+f2(etaPct)+' %</td></tr>'+
+    '</table>';
+
+  var p='';
+  p+='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+  p+='  污水抽升站設計計算過程（Cycle Time + TDH + 軸動力）\n';
+  p+='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  p+='【輸入】\n';
+  p+='  Qpump = '+qpumpLs+' L/s\n';
+  p+='  t_min = '+tmin+' min\n';
+  p+='  Hs = '+hs+' m\n';
+  p+='  η = '+etaPct+' % = '+f4(eta)+'\n';
+  if(hfMode==='manual'){
+    p+='  hf（直接輸入）= '+hf+' m\n\n';
+  }else{
+    p+=hwText;
+  }
+  p+='【一】集水井有效（啟閉）容積\n';
+  p+='  V_active(L) = (Qpump × t_min × 60) / 4\n';
+  p+='              = ('+qpumpLs+' × '+tmin+' × 60) / 4\n';
+  p+='              = '+f2(vActiveL)+' L\n';
+  p+='  V_active(m³) = '+f2(vActiveL)+' / 1000 = '+f3(vActiveM3)+' m³\n\n';
+  p+='【二】總揚程 TDH\n';
+  p+='  TDH = Hs + hf = '+hs+' + '+f3(hf)+' = '+f3(tdh)+' m\n\n';
+  p+='【三】幫浦軸動力\n';
+  p+='  ρ = 1000 kg/m³, g = 9.81 m/s²\n';
+  p+='  Q = '+qpumpLs+' L/s = '+f4(qM3s)+' m³/s\n';
+  p+='  P(kW) = (ρ × g × Q × TDH) / (1000 × η)\n';
+  p+='        = (1000 × 9.81 × '+f4(qM3s)+' × '+f3(tdh)+') / (1000 × '+f4(eta)+')\n';
+  p+='        = '+f3(pKw)+' kW\n\n';
+  p+='【備註】\n';
+  p+='  1. 集水井有效容積公式採 Hydraulic Institute cycle time 最不利進流 Qpump/2 之慣例。\n';
+  p+='  2. TDH 僅含靜揚程與輸入之摩擦損失；局部損失、設備附加損失應於正式設計另計。\n';
+  p+='  3. 軸動力為理論需求，實際選泵仍應核對泵浦曲線、馬達容量及備援配置。\n';
+  p+='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+
+  document.getElementById('sls-proc-text').textContent=p;
+  document.getElementById('sls-proc').style.display='';
+  if(window.innerWidth<768){var b=document.getElementById('mobTab-sls-r');if(b)switchMobTab('sls-r',b);}
+}
+
+toggleHfMode();
+calcSLS();
+</script>
+<script>
+window.jrhDocMeta={
+ "doc":"污水抽升站設計計算書",
+ "codes":[
+  "Hydraulic Institute, pump station cycle time sizing practice",
+  "Metcalf & Eddy, Wastewater Engineering: Collection and Pumping",
+  "Hazen-Williams equation for pressurized pipe friction loss"
+ ],
+ "notes":[
+  "本工具之集水井容積採 cycle time 法估算啟閉有效容積，適用抽升站初步設計；實際工程仍應依進流歷線、泵組台數控制邏輯及備援需求調整總井體容量。",
+  "Hazen-Williams 僅計沿程摩擦損失，未含彎頭、逆止閥、閘閥、出流構造等局部損失；正式送審應併入局部損失與安全裕度。",
+  "軸動力計算使用輸入效率為整體效率；若僅知泵效率，應另乘馬達與傳動效率修正後再選定馬達容量。",
+  "本工具未處理 NPSH、沉積控制最小流速、異味/硫化氫、淹水備援、高水位警報與雙泵交替控制等機電設計議題。",
+  "本計算結果僅供初步設計與第三方檢核參考，正式設計文件應由合格專業技師依專案條件複核。"
+ ]
+};
+</script>
+</body>
+</html>
